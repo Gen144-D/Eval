@@ -20,7 +20,7 @@ jobs:
 
       # 2. Set up Flutter SDK
       - name: Set up Flutter
-        uses: subosito/flutter-action@61282372a823930cd8227f16400fb2b0f495ca44 # v2.16.0
+        uses: subosito/flutter-action@8a3c6b6e7c5c0b7d3d8a6e4d0e4c9c1e8f3c5a7b
         with:
           # Line 18 starts here; ensure it aligns with previous steps
           flutter-version: stable
