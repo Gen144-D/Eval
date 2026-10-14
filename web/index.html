@@ -1,38 +1,466 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101c3a" />
+  <meta name="description" content="EvalTrack — evaluation tracking made clear, organized, and accountable." />
+  <title>Sign in | EvalTrack</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --navy: #101c3a;
+      --navy-2: #17284d;
+      --blue: #5268f5;
+      --blue-dark: #4054dc;
+      --mint: #70e0c1;
+      --ink: #17213b;
+      --muted: #75809a;
+      --line: #e5e9f2;
+      --surface: #ffffff;
+      --page: #f5f7fc;
+      --danger: #b42318;
+      --success: #087e65;
+      --radius: 18px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 12%, rgba(82, 104, 245, .08), transparent 28rem),
+        var(--page);
+    }
+    button, input { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
 
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+    .page-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(360px, 0.92fr) minmax(440px, 1.08fr);
+      padding: 18px;
+      gap: 18px;
+    }
 
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
+    .brand-panel {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: calc(100vh - 36px);
+      padding: clamp(30px, 4vw, 58px);
+      border-radius: 26px;
+      color: #fff;
+      background:
+        radial-gradient(ellipse at 80% 15%, rgba(112, 224, 193, .18), transparent 28%),
+        radial-gradient(ellipse at 15% 80%, rgba(82, 104, 245, .30), transparent 36%),
+        linear-gradient(145deg, #111d3d 0%, #17294e 58%, #1a3157 100%);
+    }
+    .brand-panel::before,
+    .brand-panel::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .brand-panel::before {
+      width: 510px; height: 510px;
+      right: -235px; top: 12%;
+      box-shadow: 0 0 0 42px rgba(255,255,255,.025), 0 0 0 84px rgba(255,255,255,.02);
+    }
+    .brand-panel::after {
+      width: 310px; height: 310px;
+      left: -190px; bottom: 4%;
+      box-shadow: 0 0 0 36px rgba(112,224,193,.035);
+    }
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      width: fit-content;
+      text-decoration: none;
+    }
+    .brand-mark {
+      width: 42px; height: 42px;
+      display: grid; place-items: center;
+      border-radius: 13px;
+      color: var(--navy);
+      background: var(--mint);
+      box-shadow: 0 8px 26px rgba(112,224,193,.2);
+    }
+    .brand-mark svg { width: 24px; height: 24px; }
+    .brand-name { font-size: 1.24rem; font-weight: 760; letter-spacing: -.04em; }
+    .brand-name span { color: var(--mint); }
 
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="evaltrack_flutter">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    .brand-copy { max-width: 560px; margin: 60px 0; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 999px;
+      color: #d9e3ff;
+      background: rgba(255,255,255,.055);
+      font-size: .77rem;
+      font-weight: 650;
+      letter-spacing: .075em;
+      text-transform: uppercase;
+    }
+    .eyebrow-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 0 4px rgba(112,224,193,.12);
+    }
+    h1 {
+      margin: 24px 0 18px;
+      max-width: 540px;
+      font-size: clamp(2.55rem, 4.2vw, 4.25rem);
+      line-height: 1.04;
+      letter-spacing: -.065em;
+      font-weight: 760;
+    }
+    h1 .accent { color: var(--mint); }
+    .brand-copy > p {
+      max-width: 430px;
+      margin: 0;
+      color: #c4cee5;
+      font-size: 1.02rem;
+      line-height: 1.8;
+    }
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+    .feature-list { display: grid; gap: 17px; margin-top: 34px; }
+    .feature { display: flex; gap: 13px; align-items: flex-start; color: #e7edff; }
+    .feature-icon {
+      flex: 0 0 35px;
+      width: 35px; height: 35px;
+      display: grid; place-items: center;
+      border-radius: 11px;
+      color: var(--mint);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .feature-icon svg { width: 18px; height: 18px; }
+    .feature strong { display: block; margin: 1px 0 4px; font-size: .9rem; }
+    .feature span { display: block; color: #b4c1df; font-size: .81rem; line-height: 1.55; }
 
-  <title>evaltrack_flutter</title>
-  <link rel="manifest" href="manifest.json">
+    .brand-footer {
+      display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      color: #9eaccd; font-size: .76rem;
+    }
+    .brand-footer .status { display: inline-flex; align-items: center; gap: 8px; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); }
+
+    .form-panel {
+      min-height: calc(100vh - 36px);
+      display: grid;
+      place-items: center;
+      padding: clamp(24px, 5vw, 72px);
+    }
+    .login-card { width: min(100%, 430px); }
+    .mobile-brand { display: none; }
+    .form-heading { margin-bottom: 32px; }
+    .form-heading .welcome {
+      margin: 0 0 10px;
+      color: var(--blue);
+      font-size: .78rem;
+      font-weight: 750;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h2 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 2.55rem);
+      letter-spacing: -.055em;
+      line-height: 1.15;
+    }
+    .form-heading p { margin: 12px 0 0; color: var(--muted); line-height: 1.65; font-size: .94rem; }
+
+    .field { margin-bottom: 19px; }
+    .label-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
+    label { color: #2a3550; font-size: .84rem; font-weight: 700; }
+    .text-link { color: var(--blue-dark); font-size: .81rem; font-weight: 700; text-decoration: none; }
+    .text-link:hover { text-decoration: underline; }
+    .input-wrap { position: relative; }
+    .input-icon {
+      position: absolute; top: 50%; left: 15px; transform: translateY(-50%);
+      display: grid; place-items: center; color: #8994ad; pointer-events: none;
+    }
+    .input-icon svg { width: 18px; height: 18px; }
+    input[type="email"], input[type="password"], input[type="text"] {
+      width: 100%;
+      height: 53px;
+      padding: 0 47px;
+      color: var(--ink);
+      outline: none;
+      border: 1px solid #dfe4ef;
+      border-radius: 12px;
+      background: rgba(255,255,255,.84);
+      transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    input::placeholder { color: #a3acc0; }
+    input:focus {
+      border-color: var(--blue);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(82,104,245,.11);
+    }
+    .toggle-password {
+      position: absolute; top: 50%; right: 10px; transform: translateY(-50%);
+      width: 34px; height: 34px; display: grid; place-items: center;
+      border: 0; border-radius: 8px; color: #7e89a2; background: transparent; cursor: pointer;
+    }
+    .toggle-password:hover { color: var(--blue); background: #f0f2ff; }
+    .toggle-password svg { width: 18px; height: 18px; }
+
+    .form-options { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 5px 0 24px; }
+    .remember { display: inline-flex; align-items: center; gap: 9px; color: #65708a; font-size: .82rem; cursor: pointer; }
+    .remember input { width: 16px; height: 16px; accent-color: var(--blue); }
+    .submit-btn {
+      width: 100%; min-height: 53px; display: flex; justify-content: center; align-items: center; gap: 10px;
+      border: 0; border-radius: 12px; color: white;
+      background: linear-gradient(100deg, var(--blue), #6c72f7);
+      box-shadow: 0 9px 20px rgba(82,104,245,.22);
+      font-weight: 750; cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    }
+    .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 24px rgba(82,104,245,.29); filter: saturate(1.08); }
+    .submit-btn:active { transform: translateY(0); }
+    .submit-btn svg { width: 18px; height: 18px; }
+    .divider { display: flex; align-items: center; gap: 14px; margin: 25px 0; color: #9aa3b7; font-size: .76rem; }
+    .divider::before, .divider::after { content: ""; height: 1px; flex: 1; background: var(--line); }
+    .sso-btn {
+      width: 100%; min-height: 51px; display: flex; justify-content: center; align-items: center; gap: 11px;
+      border: 1px solid #dfe4ef; border-radius: 12px; background: rgba(255,255,255,.72);
+      color: #293550; font-size: .87rem; font-weight: 700; cursor: pointer;
+      transition: background .18s ease, border-color .18s ease;
+    }
+    .sso-btn:hover { border-color: #c5cbed; background: #fff; }
+    .sso-mark { width: 20px; height: 20px; display: grid; place-items: center; font-weight: 800; color: #4285f4; font-size: 1.1rem; }
+    .signup { margin: 27px 0 0; text-align: center; color: #7c879e; font-size: .86rem; }
+    .signup a { color: var(--blue-dark); font-weight: 750; text-decoration: none; }
+    .signup a:hover { text-decoration: underline; }
+    .legal { margin-top: 42px; color: #a0a8ba; text-align: center; font-size: .73rem; line-height: 1.7; }
+    .legal a { color: #727e98; text-decoration: none; }
+    .legal a:hover { text-decoration: underline; }
+
+    .notice {
+      display: none; margin: 0 0 18px; padding: 12px 14px;
+      border-radius: 10px; font-size: .83rem; line-height: 1.5;
+    }
+    .notice.show { display: block; }
+    .notice.error { color: var(--danger); background: #fff0ef; border: 1px solid #ffd6d2; }
+    .notice.info { color: #3444a2; background: #eff1ff; border: 1px solid #dce0ff; }
+
+    @media (max-width: 980px) {
+      .page-shell { grid-template-columns: minmax(290px, .82fr) minmax(390px, 1.18fr); }
+      .brand-panel { padding: 32px; }
+      .form-panel { padding: 30px; }
+      h1 { font-size: clamp(2.45rem, 5vw, 3.5rem); }
+    }
+    @media (max-width: 760px) {
+      .page-shell { display: block; padding: 0; }
+      .brand-panel { display: none; }
+      .form-panel { min-height: 100vh; padding: 30px 22px; }
+      .login-card { width: min(100%, 430px); }
+      .mobile-brand { display: flex; margin-bottom: 44px; }
+      .mobile-brand .brand-name { color: var(--navy); }
+      .form-heading { margin-bottom: 27px; }
+      .legal { margin-top: 34px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <main class="page-shell">
+    <aside class="brand-panel" aria-label="About EvalTrack">
+      <a class="brand" href="#" aria-label="EvalTrack home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 12.5 9.2 16.5 19 6.8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 3.5h6.5A2.5 2.5 0 0 1 21 6v12a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18V6a2.5 2.5 0 0 1 2.5-2.5H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-name">Eval<span>Track</span></span>
+      </a>
+
+      <section class="brand-copy">
+        <span class="eyebrow"><span class="eyebrow-dot"></span> Evaluation, made clearer</span>
+        <h1>Better tracking.<br><span class="accent">Better outcomes.</span></h1>
+        <p>Bring evaluations, progress, and feedback together in one organized workspace designed to help your team move forward with confidence.</p>
+
+        <div class="feature-list">
+          <div class="feature">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5m0 14h16M8 15l3-4 3 2 5-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <div><strong>See progress at a glance</strong><span>Keep key evaluation milestones and results easy to follow.</span></div>
+          </div>
+          <div class="feature">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 19 6v5c0 4.5-3 7.5-7 10-4-2.5-7-5.5-7-10V6l7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <div><strong>Keep information organized</strong><span>Give authorized users a consistent place to manage evaluation work.</span></div>
+          </div>
+          <div class="feature">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v11H9l-5 4V5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </span>
+            <div><strong>Support meaningful feedback</strong><span>Help teams turn evaluation insights into next steps.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="brand-footer">
+        <span>© <span id="year"></span> EvalTrack</span>
+        <span class="status"><span class="status-dot"></span> A clearer way to evaluate</span>
+      </footer>
+    </aside>
+
+    <section class="form-panel">
+      <div class="login-card">
+        <a class="brand mobile-brand" href="#" aria-label="EvalTrack home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5 9.2 16.5 19 6.8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3.5h6.5A2.5 2.5 0 0 1 21 6v12a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18V6a2.5 2.5 0 0 1 2.5-2.5H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
+          <span class="brand-name">Eval<span>Track</span></span>
+        </a>
+
+        <header class="form-heading">
+          <p class="welcome">Welcome back</p>
+          <h2>Sign in to EvalTrack</h2>
+          <p>Enter your account details to continue to your workspace.</p>
+        </header>
+
+        <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <div class="label-row"><label for="email">Email address</label></div>
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <input id="email" name="email" type="email" placeholder="you@organization.com" autocomplete="username" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row">
+              <label for="password">Password</label>
+              <a class="text-link" href="#" id="forgotLink">Forgot password?</a>
+            </div>
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="11" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7a4 4 0 1 1 8 0v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 14v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+              </span>
+              <input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required minlength="6" />
+              <button class="toggle-password" type="button" id="togglePassword" aria-label="Show password" title="Show password">
+                <svg id="eyeIcon" viewBox="0 0 24 24" fill="none"><path d="M2.5 12s3.2-6 9.5-6 9.5 6 9.5 6-3.2 6-9.5 6-9.5-6-9.5-6Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.7" stroke="currentColor" stroke-width="1.7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="remember" for="remember">
+              <input id="remember" name="remember" type="checkbox" />
+              Remember me
+            </label>
+          </div>
+
+          <button class="submit-btn" type="submit">
+            Sign in
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+
+        <div class="divider">SECURE WORKSPACE ACCESS</div>
+
+        <button class="sso-btn" type="button" id="ssoButton">
+          <span class="sso-mark" aria-hidden="true">G</span>
+          Continue with Google
+        </button>
+
+        <p class="signup">Need an account? <a href="#" id="signupLink">Contact your administrator</a></p>
+
+        <footer class="legal">
+          By continuing, you agree to your organization's access policies.<br />
+          <a href="#" id="privacyLink">Privacy</a> · <a href="#" id="termsLink">Terms</a> · <a href="#" id="helpLink">Help &amp; support</a>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Front-end demonstration only. Connect this handler to your real authentication API.
+    const form = document.getElementById('loginForm');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const notice = document.getElementById('notice');
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function showNotice(message, type = 'info') {
+      notice.textContent = message;
+      notice.className = `notice show ${type}`;
+    }
+
+    document.getElementById('togglePassword').addEventListener('click', () => {
+      const show = password.type === 'password';
+      password.type = show ? 'text' : 'password';
+      const button = document.getElementById('togglePassword');
+      button.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+      button.title = show ? 'Hide password' : 'Show password';
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      notice.className = 'notice';
+
+      if (!email.value.trim() || !email.validity.valid) {
+        showNotice('Enter a valid email address to continue.', 'error');
+        email.focus();
+        return;
+      }
+      if (!password.value || password.value.length < 6) {
+        showNotice('Enter your password (at least 6 characters).', 'error');
+        password.focus();
+        return;
+      }
+
+      showNotice('The form is ready, but authentication is not connected yet. Connect this page to your EvalTrack sign-in service before using it with real accounts.', 'info');
+    });
+
+    document.getElementById('forgotLink').addEventListener('click', (event) => {
+      event.preventDefault();
+      showNotice('Password recovery is not connected yet. Link this action to your authentication provider’s password-reset flow.', 'info');
+    });
+
+    document.getElementById('ssoButton').addEventListener('click', () => {
+      showNotice('Google sign-in is not connected yet. Configure OAuth with your authentication provider to enable it.', 'info');
+    });
+
+    document.getElementById('signupLink').addEventListener('click', (event) => {
+      event.preventDefault();
+      showNotice('Account creation is managed by your organization. Connect this link to the correct administrator contact or registration page.', 'info');
+    });
+
+    ['privacyLink', 'termsLink', 'helpLink'].forEach((id) => {
+      document.getElementById(id).addEventListener('click', (event) => {
+        event.preventDefault();
+        showNotice('Add the appropriate EvalTrack page URL to this link when it is available.', 'info');
+      });
+    });
+  </script>
 </body>
 </html>
